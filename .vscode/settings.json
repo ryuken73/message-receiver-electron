@@ -4,7 +4,7 @@
     ".prettierrc": "jsonc",
     ".eslintignore": "ignore"
   },
-
+  "eslint.enable": false,
   "javascript.validate.enable": false,
   "javascript.format.enable": false,
   "typescript.format.enable": false,

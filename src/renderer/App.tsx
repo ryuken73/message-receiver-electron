@@ -16,7 +16,7 @@ function App() {
       <header className="App-header">
         <SplitPane  split="horizontal" defaultSize={100} allowResize={false}>
           <Header></Header>
-          <SplitPane split="vertical" defaultSize={450} minSize={450} maxSize={500} step={10}>
+          <SplitPane split="vertical" defaultSize={350} minSize={350} maxSize={500} step={10}>
             <LeftPane></LeftPane>
             <RightPane></RightPane>
           </SplitPane>

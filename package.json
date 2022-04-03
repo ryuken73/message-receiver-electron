@@ -1,6 +1,6 @@
 {
-  "name": "electron-react-boilerplate",
-  "description": "A foundation for scalable desktop apps",
+  "name": "katalk-collector",
+  "description": "katalk collector",
   "scripts": {
     "build": "concurrently \"npm run build:main\" \"npm run build:renderer\" \"npm run build:server\"",
     "build:main": "cross-env NODE_ENV=production TS_NODE_TRANSPILE_ONLY=true webpack --config ./.erb/configs/webpack.config.main.prod.ts",
@@ -32,8 +32,8 @@
     ]
   },
   "build": {
-    "productName": "sendFile",
-    "appId": "co.sbs.sendFile",
+    "productName": "katalkCollector",
+    "appId": "co.sbs.katalkCollector",
     "asar": true,
     "asarUnpack": "**\\*.{node,dll}",
     "files": [
@@ -101,8 +101,8 @@
     "url": "git+https://github.com/electron-react-boilerplate/electron-react-boilerplate.git"
   },
   "author": {
-    "name": "Electron React Boilerplate Maintainers",
-    "email": "electronreactboilerplate@gmail.com",
+    "name": "ryuken73",
+    "email": "ryuken73@gmail.com",
     "url": "https://electron-react-boilerplate.js.org"
   },
   "contributors": [
@@ -236,6 +236,7 @@
     "@mui/lab": "^5.0.0-alpha.75",
     "@mui/material": "^5.5.3",
     "@reduxjs/toolkit": "^1.8.1",
+    "copy-to-clipboard": "^3.3.1",
     "crypto-js": "^4.1.1",
     "electron-debug": "^3.2.0",
     "electron-log": "^4.4.6",

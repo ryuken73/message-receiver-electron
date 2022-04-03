@@ -19,12 +19,14 @@ const StyledText = styled.div`
     font-size: 20px;
     font-weight: bold;
     color: ${props => props.connected ? 'green':'red'};
+    width: 200px;
 `
 
 const Header = props => {
   const {socketConnected} = useAppState();
   return (
     <HeaderContainer>
+        <StyledText ></StyledText>
         <StyledTitle>카카오톡 수신</StyledTitle>
         <StyledText connected={socketConnected}>{socketConnected ? 'Connected':'Disconnected'}</StyledText>
     </HeaderContainer>
