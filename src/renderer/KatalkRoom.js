@@ -34,43 +34,50 @@ const StyledText = styled.div`
     font-weight: bold;
     font-size: 15px;
 `
+const itemLabel = css`
+    width: auto;
+    padding-right: 5px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    max-width: 200px;
+    border-radius: 3px;
+`
+
 
 const StyledTreeItem = styled(TreeItem)`
+  width: fit-content;
+  .MuiTreeItem-content {
     width: fit-content;
-    .MuiTreeItem-content {
-        .MuiTreeItem-iconContainer {
-            width: 0px;
-        }
+    .MuiTreeItem-iconContainer {
+      width: 0px;
     }
-    .MuiTreeItem-content {
-        width: fit-content;
-        .MuiTreeItem-label {
-            width: auto;
-            padding-right: 5px;
-        }
+    .MuiTreeItem-label {
+      ${itemLabel};
     }
-    .MuiTreeItem-content.Mui-focused {
-        background: transparent !important;
-        .MuiTreeItem-label {
-            border-radius: 3px;
-            background: darkgreen;
-        }
+    &.Mui-focused {
+      background: transparent !important;
+      .MuiTreeItem-label {
+        ${itemLabel};
+        background: darkgreen;
+      }
     }
-    .MuiTreeItem-content.Mui-selected.Mui-focused {
-        background: transparent !important;
-        .MuiTreeItem-label {
-            border-radius: 3px;
-            background: maroon;
-        }
+    &.Mui-focused.Mui-selected {
+      background: transparent !important;
+      .MuiTreeItem-label {
+        ${itemLabel};
+        background: maroon;
+      }
     }
-    .MuiTreeItem-content.Mui-selected {
-        background: transparent !important;
-        .MuiTreeItem-label {
-            border-radius: 3px;
-            background: maroon;
-        }
+    &.Mui-selected {
+      background: transparent !important;
+      .MuiTreeItem-label {
+        ${itemLabel};
+        background: maroon;
+      }
     }
-    ${props => (props.index === 0 && updateStyle)};
+  }
+  ${props => (props.index === 0 && updateStyle)};
 `
 
 const KatalkRoom = props => {
