@@ -5,11 +5,12 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import TreeItem from '@mui/lab/TreeItem';
 import KatalkRoom from 'renderer/KatalkRoom';
+import useConfig from 'renderer/hooks/useConfig';
 import useAppState from 'renderer/hooks/useAppState';
 import useSocketIO from 'renderer/hooks/useSocketIO';
 import useKatalkTreeState from 'renderer/hooks/useKatalkTreeState';
 import constants from 'renderer/config/constants';
-const {SOCKET_SERVER_URL, EVENT_NEW_MESSAGES} = constants;
+const {EVENT_NEW_MESSAGES} = constants;
 
 const LeftContainer = styled.div`
     box-sizing: border-box;
@@ -22,9 +23,11 @@ const LeftContainer = styled.div`
 const StyledTreeItem = styled(TreeItem)`
     width: fit-content;
 `
-function LeftPane() {
+function LeftPane(props) {
+    const {url} = props;
+    console.log('in LeftPane:', url);
     const {setSocketConnected} = useAppState();
-    const {socket} = useSocketIO({hostAddress: SOCKET_SERVER_URL, setSocketConnected});
+    const {socket} = useSocketIO({hostAddress: url, setSocketConnected});
     const {
         katalkTopFolder,
         katalkRooms,

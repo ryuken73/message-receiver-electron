@@ -5,7 +5,7 @@ const {EVENT_NEW_MESSAGES} = constants
 
 export default function useSocketClient(props) {
     const {
-        hostAddress='https://autoeditdev.sbs.co.kr',
+        hostAddress='http://127.0.0.1',
         setSocketConnected,
     } = props
     const [socket, setSocket] = React.useState(null);
@@ -24,6 +24,6 @@ export default function useSocketClient(props) {
         return () => {
             socket.disconnect();
         }
-    },[])
+    },[hostAddress])
     return {socket}
 }

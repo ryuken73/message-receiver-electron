@@ -15,6 +15,8 @@ import log from 'electron-log';
 import { fork } from 'child_process';
 import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
+import fs from 'fs';
+import path from 'path';
 
 export default class AppUpdater {
   constructor() {
@@ -31,6 +33,7 @@ ipcMain.on('ipc-example', async (event, arg) => {
   console.log(msgTemplate(arg));
   event.reply('ipc-example', msgTemplate('pong'));
 });
+
 
 if (process.env.NODE_ENV === 'production') {
   const sourceMapSupport = require('source-map-support');
@@ -134,14 +137,22 @@ app
       // dock icon is clicked and there are no other windows open.
       if (mainWindow === null) createWindow();
     });
+    ipcMain.handle('get-custom-config', async () => {
+        const customJsonFile = path.join(app.getPath('home'), 'katalk-config.json');
+        const ret = readJSONFile(customJsonFile);
+        return Promise.resolve(ret);
+    })
     console.log('app ready:', __dirname);
-    // const webServer = fork(path.join(__dirname, '../server/index.js'),[], {
-    //   stdio: ['inherit', 'inherit', 'inherit', 'ipc']
-    // });
-    // webServer.on('close', (code, signal) => console.log(`close:`, code, signal));
-    // webServer.on('exit', (code, signal) => console.log(`exit:`, code, signal));
-    // webServer.on('error', (error) => console.log(`error:`, error));
-    // webServer.on('spawn', () => console.log(`spawn:`, webServer.pid));
-    // webServer.stdout?.on('data', data => console.log('data from stdin:', data.toString()));
   })
   .catch(console.log);
+
+const readJSONFile = jsonFile => {
+    try {
+        const obj = JSON.parse(fs.readFileSync(jsonFile));
+        console.log(obj)
+        return obj;
+    } catch(err) {
+        console.error(err)
+        return {};
+    }
+}
