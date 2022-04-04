@@ -1,8 +1,13 @@
 import {createSlice} from "@reduxjs/toolkit";
 import {genSequence} from 'renderer/lib/util';
 import constants from 'renderer/config/constants';
+import { isDate } from "util/types";
 
 const {MAX_RETAIN_MESSAGES} = constants
+const {KATALK_MESSAGE_REGEXP} = constants;
+const {REGEXP_DATE, REGEXP_MESSAGE} = KATALK_MESSAGE_REGEXP;
+
+const isDate = message => REGEXP_DATE.test(message);
 
 const initialState = {
     katalkTopFolder: {},
@@ -65,7 +70,12 @@ export const katalkTreeSlice = createSlice({
             if(state.katalkMessages[roomName] === undefined){
                 state.katalkMessages[roomName] = messages
             } else {
-                state.katalkMessages[roomName] = [...messages, ...state.katalkMessages[roomName]]
+                const [firstMessage, ...restMessages] = state.katalkMessages[roomName];
+                if(isDate(firstMessage) && messages.includes(firstMessage)){
+                  state.katalkMessages[roomName] = [...messages, ...restMessages]
+                } else {
+                  state.katalkMessages[roomName] = [...messages, ...state.katalkMessages[roomName]]
+                }
             }
             state.katalkMessages[roomName] = tailArray(state.katalkMessages[roomName], MAX_RETAIN_MESSAGES);
             const katalkRoom = state.katalkRooms.find(katalkRoom => katalkRoom.roomName === roomName)

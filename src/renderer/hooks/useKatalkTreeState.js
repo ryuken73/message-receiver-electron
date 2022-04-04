@@ -17,6 +17,11 @@ import {
 import { Difference } from '@mui/icons-material';
 
 const {KATALK_TOP_FOLDER_NAME} = constants;
+const {KATALK_MESSAGE_REGEXP} = constants;
+const {REGEXP_DATE, REGEXP_MESSAGE} = KATALK_MESSAGE_REGEXP;
+
+const isDate = message => REGEXP_DATE.test(message);
+const isMessage = message => REGEXP_MESSAGE.test(message);
 
 export default function useKatalkTreeState() {
     const dispatch = useDispatch();
@@ -59,8 +64,16 @@ export default function useKatalkTreeState() {
         if(currentMessagesHash === newMessagesHash){
             return [constants.NEW_MESSAGE_TYPE.EQUAL, []]
         }
-        const currentStart = currentMessages.values().next().value;
-        const newStart = newMessages.values().next().value;
+        // const currentStart = currentMessages.values().next().value;
+        // const newStart = newMessages.values().next().value;
+
+        // start message can be data string but data string is not proper to be used by comparing
+        const curStartIterator = currentMessages.values();
+        const newStartIterator = newMessages.values();
+        const curFirstValue = curStartIterator.next().value;
+        const newFirstValue = newStartIterator.next().value;
+        const currentStart = isDate(curFirstValue) ? curStartIterator.next().value: curFirstValue;
+        const newStart = isDate(newFirstValue) ? newStartIterator.next().value: newFirstValue;
         console.log(`diff:`, currentStart, newStart)
         // new message appended to bottom
         if(currentStart === newStart){
