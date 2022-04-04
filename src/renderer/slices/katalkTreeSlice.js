@@ -119,7 +119,7 @@ export const katalkTreeSlice = createSlice({
             const {payload} = action;
             const {nodeId} = payload;
             const katalkRoom = state.katalkRooms.find(room => room.nodeId === nodeId);
-            katalkRoom.numberOfNewMessages = 0;
+            if(katalkRoom) katalkRoom.numberOfNewMessages = 0;
         }
     }
 })
