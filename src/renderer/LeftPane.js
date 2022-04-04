@@ -31,7 +31,7 @@ function LeftPane() {
         orderedKatalkRooms,
         initializeTopFolder,
         addKatalkRoom,
-        addKatalkMessages,
+        // addKatalkMessages,
         appendKatalkMessages,
         unshiftKatalkMessages,
         compareWithCurrentMessages,

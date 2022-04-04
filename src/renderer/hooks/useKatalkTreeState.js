@@ -7,10 +7,12 @@ import {
     setSelectedNodeIdAction,
     addKatalkRoomAction,
     delKatalkRoomAction,
-    addKatalkMessageAction,
+    // addKatalkMessageAction,
     appendKatalkMessagesAction,
     unshiftKatalkMessagesAction,
+    increaseNewMessageCountAction,
     clearKatalkMessageAction,
+    resetNewMessageCountAction
 } from 'renderer/slices/katalkTreeSlice';
 import { Difference } from '@mui/icons-material';
 
@@ -98,17 +100,19 @@ export default function useKatalkTreeState() {
 
     const appendKatalkMessages = React.useCallback((roomName, messages) => {
         dispatch(appendKatalkMessagesAction({roomName, messages}))
+        dispatch(increaseNewMessageCountAction({roomName, messages}))
     },[dispatch])
 
     const unshiftKatalkMessages = React.useCallback((roomName, messages) => {
         dispatch(unshiftKatalkMessagesAction({roomName, messages}))
+        dispatch(increaseNewMessageCountAction({roomName, messages}))
     },[dispatch])
 
-    const addKatalkMessages = React.useCallback((roomName, messages) => {
-        messages.forEach(message => {
-            dispatch(addKatalkMessageAction({roomName, message}));
-        })
-    },[dispatch])
+    // const addKatalkMessages = React.useCallback((roomName, messages) => {
+    //     messages.forEach(message => {
+    //         dispatch(addKatalkMessageAction({roomName, message}));
+    //     })
+    // },[dispatch])
 
     const clearKatalkMessages = React.useCallback(roomName => {
         dispatch(clearKatalkMessageAction({roomName}))
@@ -116,12 +120,19 @@ export default function useKatalkTreeState() {
 
     const setSelecteNodeId = React.useCallback(nodeId => {
         dispatch(setSelectedNodeIdAction({nodeId}));
+        dispatch(resetNewMessageCountAction({nodeId}));
     },[dispatch])
 
     const getNumberOfRoomMessages = React.useCallback(roomName => {
         const messages = katalkMessages[roomName] || []
         return messages.length
     },[katalkMessages])
+
+    const getNumberOfNewMessages = React.useCallback(roomName => {
+      const katalkRoom = katalkRooms.find(room => room.roomName === roomName);
+      console.log(katalkRoom)
+      return katalkRoom.numberOfNewMessages;
+    },[katalkRooms])
 
     return {
         katalkTopFolder,
@@ -134,12 +145,13 @@ export default function useKatalkTreeState() {
         initializeTopFolder,
         addKatalkRoom,
         delKatalkRoom,
-        addKatalkMessages,
+        // addKatalkMessages,
         compareWithCurrentMessages,
         appendKatalkMessages,
         unshiftKatalkMessages,
         clearKatalkMessages,
         setSelecteNodeId,
-        getNumberOfRoomMessages
+        getNumberOfRoomMessages,
+        getNumberOfNewMessages
     }
 }

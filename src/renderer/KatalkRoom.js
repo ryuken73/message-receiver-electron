@@ -29,6 +29,9 @@ const StyledIconButton = styled(IconButton)`
     padding: 3px !important;
 `
 const StyledText = styled.div`
+    height: 24px;
+    color: yellow;
+    font-weight: bold;
     font-size: 15px;
 `
 
@@ -76,10 +79,15 @@ const KatalkRoom = props => {
     React.useEffect(() => {
         setLastUpdated(lastUpdatedTimestamp)
     },[lastUpdatedTimestamp])
-    const {delKatalkRoom, getNumberOfRoomMessages} = useKatalkTreeState();
+    const {
+      delKatalkRoom,
+      getNumberOfRoomMessages,
+      getNumberOfNewMessages
+    } = useKatalkTreeState();
     const clickRemoveRoom = React.useCallback(() => {
         delKatalkRoom(roomName);
     },[delKatalkRoom, roomName])
+    const newMessageCount = getNumberOfNewMessages(roomName);
     return (
         <Container>
             <StyledIconButton onClick={clickRemoveRoom} sx={{color: 'red'}}>
@@ -89,9 +97,11 @@ const KatalkRoom = props => {
                 {...props}
             >
             </StyledTreeItem>
-            <StyledText>
-                [{getNumberOfRoomMessages(roomName)}]
-            </StyledText>
+            {newMessageCount !== 0 && (
+              <StyledText>
+                  [{getNumberOfNewMessages(roomName)}]
+              </StyledText>
+            )}
         </Container>
     )
 }

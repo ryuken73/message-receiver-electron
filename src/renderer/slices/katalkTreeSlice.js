@@ -34,7 +34,12 @@ export const katalkTreeSlice = createSlice({
             const {payload} = action;
             const {roomName} = payload;
             const lastUpdatedTimestamp = Date.now();
-            state.katalkRooms.push({nodeId: getNextId(), roomName, lastUpdatedTimestamp});
+            state.katalkRooms.push({
+              nodeId: getNextId(),
+              roomName,
+              lastUpdatedTimestamp,
+              numberOfNewMessages: 0
+            });
         },
         delKatalkRoomAction: (state, action) => {
             const {payload} = action;
@@ -66,17 +71,29 @@ export const katalkTreeSlice = createSlice({
             const katalkRoom = state.katalkRooms.find(katalkRoom => katalkRoom.roomName === roomName)
             katalkRoom.lastUpdatedTimestamp = Date.now();
         },
-        addKatalkMessageAction: (state, action) => {
+        // addKatalkMessageAction: (state, action) => {
+        //     const {payload} = action;
+        //     const {roomName, message} = payload;
+        //     if(state.katalkMessages[roomName] !== undefined){
+        //         state.katalkMessages[roomName].push(message)
+        //     } else {
+        //         state.katalkMessages[roomName] = [message]
+        //     }
+        //     state.katalkMessages[roomName] = tailArray(state.katalkMessages[roomName], MAX_RETAIN_MESSAGES);
+        //     const katalkRoom = state.katalkRooms.find(katalkRoom => katalkRoom.roomName === roomName)
+        //     katalkRoom.lastUpdatedTimestamp = Date.now();
+        // },
+        increaseNewMessageCountAction: (state, action) => {
             const {payload} = action;
-            const {roomName, message} = payload;
-            if(state.katalkMessages[roomName] !== undefined){
-                state.katalkMessages[roomName].push(message)
-            } else {
-                state.katalkMessages[roomName] = [message]
+            const {roomName, messages} = payload;
+            const katalkRoom = state.katalkRooms.find(room => room.roomName === roomName);
+            //if new message appended or unshifted on current selected chatroom,
+            //set current message length zero
+            if(state.selectedNodeId === katalkRoom.nodeId){
+              katalkRoom.numberOfNewMessages = 0;
+              return
             }
-            state.katalkMessages[roomName] = tailArray(state.katalkMessages[roomName], MAX_RETAIN_MESSAGES);
-            const katalkRoom = state.katalkRooms.find(katalkRoom => katalkRoom.roomName === roomName)
-            katalkRoom.lastUpdatedTimestamp = Date.now();
+            katalkRoom.numberOfNewMessages += messages.length;
         },
         clearKatalkMessageAction: (state, action) => {
             const {payload} = action;
@@ -87,6 +104,12 @@ export const katalkTreeSlice = createSlice({
             const {payload} = action;
             const {nodeId} = payload;
             state.selectedNodeId = nodeId;
+        },
+        resetNewMessageCountAction: (state, action) => {
+            const {payload} = action;
+            const {nodeId} = payload;
+            const katalkRoom = state.katalkRooms.find(room => room.nodeId === nodeId);
+            katalkRoom.numberOfNewMessages = 0;
         }
     }
 })
@@ -99,7 +122,9 @@ export const {
     appendKatalkMessagesAction,
     unshiftKatalkMessagesAction,
     addKatalkMessageAction,
+    increaseNewMessageCountAction,
     clearKatalkMessageAction,
+    resetNewMessageCountAction,
 } = katalkTreeSlice.actions;
 
 export default katalkTreeSlice.reducer;
