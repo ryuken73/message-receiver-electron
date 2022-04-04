@@ -91,14 +91,10 @@
       "./assets/**"
     ],
     "publish": {
-      "provider": "github",
-      "owner": "electron-react-boilerplate",
-      "repo": "electron-react-boilerplate"
+      "provider": "generic",
+      "owner": "ryuken73",
+      "url": "https://gitlabsvr.sbs.co.kr/ryuken73"
     }
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/electron-react-boilerplate/electron-react-boilerplate.git"
   },
   "author": {
     "name": "ryuken73",
