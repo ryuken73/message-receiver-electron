@@ -1,8 +1,12 @@
 import React from 'react'
 import styled from 'styled-components'
 import TreeView from '@mui/lab/TreeView';
+import IconButton from '@mui/material/IconButton';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import MarkChatUnreadIcon from '@mui/icons-material/MarkChatUnread';
+import ChatBubbleIcon from '@mui/icons-material/ChatBubble';
+import ClearIcon from '@mui/icons-material/Clear';
 import TreeItem from '@mui/lab/TreeItem';
 import KatalkRoom from 'renderer/KatalkRoom';
 import useConfig from 'renderer/hooks/useConfig';
@@ -17,8 +21,24 @@ const LeftContainer = styled.div`
     height: 100%;
     background: #382121;
     text-align: left;
-    padding-top: 20px;
+    padding-top: 10px;
     overflow-y: auto;
+`
+const IconGroupContainer = styled.div`
+  // width: 100%;
+  padding-left: 10px;
+  padding-bottom: 10px;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+`
+const StyledIconButton = styled(IconButton)`
+  padding: 3px !important;
+  color: maroon !important;
+`
+const StyledTreeView = styled(TreeView)`
+  height: auto !important;
 `
 const StyledTreeItem = styled(TreeItem)`
     width: fit-content;
@@ -32,13 +52,16 @@ function LeftPane(props) {
         katalkTopFolder,
         katalkRooms,
         orderedKatalkRooms,
+        hasUnreadMessages,
         initializeTopFolder,
         addKatalkRoom,
         // addKatalkMessages,
         appendKatalkMessages,
         unshiftKatalkMessages,
         compareWithCurrentMessages,
-        setSelecteNodeId
+        setSelecteNodeId,
+        resetAllNewMessageCount,
+        initializeRoomNMessages
     } = useKatalkTreeState();
 
     const handleMessages = React.useCallback(newMessages => {
@@ -76,13 +99,27 @@ function LeftPane(props) {
 
     return (
         <LeftContainer>
-            <TreeView
-            aria-label="file system navigator"
-            defaultCollapseIcon={<ExpandMoreIcon />}
-            defaultExpandIcon={<ChevronRightIcon />}
-            sx={{ height: '100%', flexGrow: 1 }}
-            expanded={["0"]}
-            onNodeSelect={handleNodeSelect}
+            <IconGroupContainer>
+              <StyledIconButton onClick={initializeRoomNMessages}>
+                <ClearIcon fontSize="large"></ClearIcon>
+              </StyledIconButton>
+              {hasUnreadMessages ? (
+                <StyledIconButton onClick={resetAllNewMessageCount}>
+                  <MarkChatUnreadIcon fontSize="large"></MarkChatUnreadIcon>
+                </StyledIconButton>
+              ):(
+                <StyledIconButton>
+                  <ChatBubbleIcon fontSize="large"></ChatBubbleIcon>
+                </StyledIconButton>
+              )}
+            </IconGroupContainer>
+            <StyledTreeView
+              aria-label="file system navigator"
+              defaultCollapseIcon={<ExpandMoreIcon />}
+              defaultExpandIcon={<ChevronRightIcon />}
+              sx={{ height: '100%', flexGrow: 1 }}
+              expanded={["0"]}
+              onNodeSelect={handleNodeSelect}
             >
                 {katalkTopFolder.nodeId !== undefined ? (
                     <StyledTreeItem nodeId={katalkTopFolder.nodeId} label={katalkTopFolder.name}>
@@ -99,7 +136,7 @@ function LeftPane(props) {
                     <div></div>
                 }
 
-            </TreeView>
+            </StyledTreeView>
         </LeftContainer>
     )
 }

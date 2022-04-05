@@ -43,8 +43,6 @@ const itemLabel = css`
     max-width: 200px;
     border-radius: 3px;
 `
-
-
 const StyledTreeItem = styled(TreeItem)`
   width: fit-content;
   .MuiTreeItem-content {

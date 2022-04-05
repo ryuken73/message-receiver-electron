@@ -12,7 +12,9 @@ import {
     unshiftKatalkMessagesAction,
     increaseNewMessageCountAction,
     clearKatalkMessageAction,
-    resetNewMessageCountAction
+    resetNewMessageCountAction,
+    resetAllNewMessageCountAction,
+    initializeRoomNMessagesAction,
 } from 'renderer/slices/katalkTreeSlice';
 import { Difference } from '@mui/icons-material';
 
@@ -31,6 +33,7 @@ export default function useKatalkTreeState() {
     const selectedNodeId = useSelector(state => state.katalkTree.selectedNodeId);
     const selectedRoomName = katalkRooms.find(katalkRoom => katalkRoom.nodeId === selectedNodeId)?.roomName;
     const messagesOfSelectedRoom = katalkMessages[selectedRoomName];
+    const hasUnreadMessages = katalkRooms.some(katalkRoom => katalkRoom.numberOfNewMessages > 0)
     const orderedKatalkRooms = React.useMemo(() => [...katalkRooms], [katalkRooms]);
     // const orderedKatalkRooms = [...katalkRooms]
     orderedKatalkRooms.sort((a, b) => b.lastUpdatedTimestamp - a.lastUpdatedTimestamp);
@@ -147,6 +150,14 @@ export default function useKatalkTreeState() {
       return katalkRoom.numberOfNewMessages;
     },[katalkRooms])
 
+    const resetAllNewMessageCount = React.useCallback(() => {
+      dispatch(resetAllNewMessageCountAction())
+    },[dispatch])
+
+    const initializeRoomNMessages = React.useCallback(() => {
+      dispatch(initializeRoomNMessagesAction())
+    },[dispatch])
+
     return {
         katalkTopFolder,
         katalkRooms,
@@ -155,6 +166,7 @@ export default function useKatalkTreeState() {
         selectedRoomName,
         messagesOfSelectedRoom,
         orderedKatalkRooms,
+        hasUnreadMessages,
         initializeTopFolder,
         addKatalkRoom,
         delKatalkRoom,
@@ -165,6 +177,8 @@ export default function useKatalkTreeState() {
         clearKatalkMessages,
         setSelecteNodeId,
         getNumberOfRoomMessages,
-        getNumberOfNewMessages
+        getNumberOfNewMessages,
+        resetAllNewMessageCount,
+        initializeRoomNMessages,
     }
 }

@@ -120,6 +120,16 @@ export const katalkTreeSlice = createSlice({
             const {nodeId} = payload;
             const katalkRoom = state.katalkRooms.find(room => room.nodeId === nodeId);
             if(katalkRoom) katalkRoom.numberOfNewMessages = 0;
+        },
+        resetAllNewMessageCountAction: (state, action) => {
+            state.katalkRooms.forEach(room => {
+              room.numberOfNewMessages = 0;
+            })
+        },
+        initializeRoomNMessagesAction: (state, action) => {
+          state.katalkRooms = [];
+          state.katalkMessages = {};
+          state.selectedNodeId = null;
         }
     }
 })
@@ -135,6 +145,8 @@ export const {
     increaseNewMessageCountAction,
     clearKatalkMessageAction,
     resetNewMessageCountAction,
+    resetAllNewMessageCountAction,
+    initializeRoomNMessagesAction,
 } = katalkTreeSlice.actions;
 
 export default katalkTreeSlice.reducer;
