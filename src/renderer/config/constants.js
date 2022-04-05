@@ -5,7 +5,7 @@ const dev =  {
         'REGEXP_DATE': /^\d.*년\s*\d.*월\s*\d.*일.*/,
         'REGEXP_MESSAGE': /^(\[.*?\])\s?(\[.*?\])\s?((.|\n)*)/g
     },
-    SOCKET_SERVER_URL: 'https://autoeditdev.sbs.co.kr',
+    SOCKET_SERVER_URL: 'http://10.40.254.51:9009',
     EVENT_NEW_MESSAGES: 'post:newMessages',
     NEW_MESSAGE_TYPE: {
         "EQUAL":"1",
