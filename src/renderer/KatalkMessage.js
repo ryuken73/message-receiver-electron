@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled, {css, keyframes} from 'styled-components';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 import ClickAwayListener from '@mui/material/ClickAwayListener';
@@ -13,6 +13,26 @@ const {REGEXP_DATE, REGEXP_MESSAGE} = KATALK_MESSAGE_REGEXP;
 const isDate = message => REGEXP_DATE.test(message);
 const isMessage = message => REGEXP_MESSAGE.test(message);
 
+const highlightMessage = keyframes`
+  0% {
+    background: transparent;
+  }
+  5% {
+    background: #624e4e;
+    // font-weight: bold;
+    font-size: 15px;
+    color: yellow;
+  }
+  100% {
+    background: transparent;
+  }
+`
+const highlightAnimation = css`
+  animation-name: ${highlightMessage};
+  animation-delay: 0.1s;
+  animation-duration: 2s;
+  animation-fill-mode: both;
+`
 const MessageContainer = styled.div``
 const ChatContainer = styled.div`
   display: flex;
@@ -38,6 +58,7 @@ const Title = styled.div`
 const Message = styled.div`
     white-space: pre-line;
     margin-left: 60px;
+  ${props => props.open && highlightAnimation}
 `
 const StyledIconButton = styled(IconButton)`
     padding: 3px !important;
@@ -61,8 +82,14 @@ const KatalkMessage = props => {
     const handleTooltipClose = () => setOpen(false)
     // const handleTooltipOpen = () => setOpen(true)
     const clickCopy = React.useCallback(() => {
-      const copied = copy(restStr)
-      setOpen(open => copied)
+      // const copied = copy(restStr)
+      // setOpen(open => copied)
+      setOpen(open => {
+        if(!open){
+          copy(restStr)
+        }
+        return !open;
+      })
     },[setOpen])
     return (
         <MessageContainer>
@@ -74,7 +101,7 @@ const KatalkMessage = props => {
                 <React.Fragment>
                     <Title>{whoStr}{timeStr}</Title>
                     <ChatContainer>
-                      <Message>{restStr}</Message>
+                      <Message open={open}>{restStr}</Message>
                       <ClickAwayListener onClickAway={handleTooltipClose}>
                         <Tooltip
                           PopperProps={{
