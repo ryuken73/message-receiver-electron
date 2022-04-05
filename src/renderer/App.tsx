@@ -29,7 +29,7 @@ function App() {
     <div className="App">
       <header className="App-header">
         <SplitPane  split="horizontal" defaultSize={100} allowResize={false}>
-          <Header></Header>
+          <Header url={config.SOCKET_SERVER_URL}></Header>
           <SplitPane split="vertical" defaultSize={350} minSize={350} maxSize={500} step={10}>
             <LeftPane url={config.SOCKET_SERVER_URL}></LeftPane>
             <RightPane></RightPane>

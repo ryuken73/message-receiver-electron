@@ -19,7 +19,8 @@ const {EVENT_NEW_MESSAGES} = constants;
 const LeftContainer = styled.div`
     box-sizing: border-box;
     height: 100%;
-    background: #382121;
+    // background: #382121;
+    background: #280808;
     text-align: left;
     padding-top: 10px;
     overflow-y: auto;
