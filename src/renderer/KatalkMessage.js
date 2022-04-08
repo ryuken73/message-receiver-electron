@@ -58,6 +58,7 @@ const Title = styled.div`
 const Message = styled.div`
     white-space: pre-line;
     margin-left: 60px;
+    word-break: break-all;
   ${props => props.open && highlightAnimation}
 `
 const StyledIconButton = styled(IconButton)`
